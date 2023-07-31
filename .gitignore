@@ -1,8 +1,8 @@
 /node_modules
 /dist
-.dumi/tmp
-.dumi/tmp-test
-.dumi/tmp-production
+/docs-dist
+/.dumi
 .DS_Store
+Thumbs.db
 /.husky
 *.code-workspace
