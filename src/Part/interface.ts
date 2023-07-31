@@ -10,7 +10,7 @@ import type {
   TimePickerProps,
   TimeRangePickerProps,
 } from 'antd';
-import {
+import type {
   PickerDateProps,
   RangePickerProps,
 } from 'antd/lib/date-picker/generatePicker';
@@ -20,15 +20,15 @@ import { Dayjs } from 'dayjs';
 type ScrollAlign = 'top' | 'bottom' | 'auto';
 type ScrollConfig =
   | {
-    index: number;
-    align?: ScrollAlign;
-    offset?: number;
-  }
+      index: number;
+      align?: ScrollAlign;
+      offset?: number;
+    }
   | {
-    key: React.Key;
-    align?: ScrollAlign;
-    offset?: number;
-  };
+      key: React.Key;
+      align?: ScrollAlign;
+      offset?: number;
+    };
 
 type ScrollTo = (arg: number | ScrollConfig) => void;
 
@@ -37,18 +37,20 @@ export interface BaseSelectRef {
   blur: () => void;
   scrollTo: ScrollTo;
 }
-export type PartRef = React.Ref<BaseSelectRef> &
-  React.Ref<HTMLElement> &
-  React.Ref<HTMLInputElement> &
-  React.Ref<InputRef> &
-  any &
-  React.Ref<any>;
+export type PartRef =
+  | React.Ref<BaseSelectRef>
+  | React.Ref<HTMLElement>
+  | React.Ref<HTMLInputElement>
+  | React.Ref<InputRef>
+  | any
+  | React.Ref<any>;
 
 interface DatePickerProps extends Omit<PickerDateProps<Dayjs>, 'dateRender'> {
   title: string;
 }
 
-export type ItemType = 'button'
+export type ItemType =
+  | 'button'
   | 'checkbox'
   | 'date'
   | 'dateRange'
@@ -63,12 +65,46 @@ export type ItemType = 'button'
   | 'time'
   | 'timeRange';
 
-interface DateRangeProps extends Omit<RangePickerProps<Dayjs>, 'dateRender'> {
-  title: string;
+export {
+  ButtonProps,
+  CheckboxProps,
+  DatePickerProps,
+  ImageProps,
+  InputNumberProps,
+  InputProps,
+  PasswordProps,
+  RadioGroupProps,
+  SearchProps,
+  SelectProps,
+  TextAreaProps,
 };
-interface TimeProps extends TimePickerProps { title: string };
-interface TimeRangeProps extends TimeRangePickerProps { title: string };
+export interface DateProps extends DatePickerProps {
+  title: string;
+}
+export interface DateRangeProps
+  extends Omit<RangePickerProps<Dayjs>, 'dateRender'> {
+  title: string;
+}
+export interface TimeProps extends TimePickerProps {
+  title: string;
+}
+export interface TimeRangeProps extends TimeRangePickerProps {
+  title: string;
+}
 export interface PartProps {
-  optionType: ItemType;
-  optionProps: ButtonProps & CheckboxProps & DatePickerProps & DateRangeProps & ImageProps & InputProps & InputNumberProps & PasswordProps & RadioGroupProps & SearchProps & SelectProps & TextAreaProps & TimeProps
+  itemType: ItemType;
+  itemProps:
+    | ButtonProps
+    | CheckboxProps
+    | DateProps
+    | DateRangeProps
+    | ImageProps
+    | InputProps
+    | InputNumberProps
+    | PasswordProps
+    | RadioGroupProps
+    | SearchProps
+    | SelectProps
+    | TextAreaProps
+    | TimeProps;
 }

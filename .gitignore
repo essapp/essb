@@ -5,3 +5,4 @@
 .dumi/tmp-production
 .DS_Store
 /.husky
+*.code-workspace

@@ -7,113 +7,136 @@ import {
   InputNumber,
   Radio,
   Select,
-  TimePicker,
   Tooltip,
 } from 'antd';
 import { forwardRef } from 'react';
-import { PartProps, PartRef } from './interface';
+import type {
+  ButtonProps,
+  CheckboxProps,
+  DateProps,
+  ImageProps,
+  InputNumberProps,
+  InputProps,
+  PartProps,
+  PartRef,
+  PasswordProps,
+  RadioGroupProps,
+  SearchProps,
+  SelectProps,
+  TextAreaProps,
+} from './interface';
 
 const Part = forwardRef<PartRef, PartProps>((props, ref) => {
-  const {
-    buttonProps,
-    checkboxProps,
-    dateProps,
-    dateRangeProps,
-    imageProps,
-    inputProps,
-    numberProps,
-    optionType,
-    passwordProps,
-    radioProps,
-    searchProps,
-    selectProps,
-    textAreaProps,
-    timeProps,
-    timeRangeProps,
-    ...rest
-  } = props;
-  switch (optionType) {
+  const { itemProps, itemType, ...rest } = props;
+  if (itemType === 'date') {
+    const { title: dateTitle, ...dateProps } = itemProps as DateProps;
+    return (
+      <Tooltip title={dateTitle}>
+        <DatePicker ref={ref} {...dateProps} {...rest}></DatePicker>
+      </Tooltip>
+    );
+  }
+  switch (itemType) {
     case 'button':
-      return <Button ref={ref} {...buttonProps} {...rest}></Button>;
-      break;
-    case 'checkbox':
-      return <Checkbox ref={ref} {...checkboxProps} {...rest}></Checkbox>;
-      break;
-    case 'date':
       return (
-        <Tooltip title={dateProps?.title}>
-          <DatePicker ref={ref} {...dateProps} {...rest}></DatePicker>
-        </Tooltip>
+        <Button ref={ref} {...(itemProps as ButtonProps)} {...rest}></Button>
       );
       break;
-    case 'dateRange':
+    case 'checkbox':
       return (
-        <Tooltip title={dateRangeProps?.title}>
-          <DatePicker.RangePicker
-            ref={ref}
-            {...dateRangeProps}
-            {...rest}
-          ></DatePicker.RangePicker>
-        </Tooltip>
+        <Checkbox
+          ref={ref}
+          {...(itemProps as CheckboxProps)}
+          {...rest}
+        ></Checkbox>
       );
       break;
     case 'image':
-      return <Image {...imageProps} {...rest}></Image>;
+      return <Image {...(itemProps as ImageProps)} {...rest}></Image>;
       break;
     case 'number':
-      return <InputNumber ref={ref} {...numberProps} {...rest}></InputNumber>;
+      return (
+        <InputNumber
+          ref={ref}
+          {...(itemProps as InputNumberProps)}
+          {...rest}
+        ></InputNumber>
+      );
       break;
     case 'password':
       return (
         <Input.Password
           ref={ref}
           allowClear
-          {...passwordProps}
+          {...(itemProps as PasswordProps)}
           {...rest}
         ></Input.Password>
       );
       break;
     case 'radio':
-      return <Radio.Group ref={ref} {...radioProps} {...rest}></Radio.Group>;
+      return (
+        <Radio.Group
+          ref={ref}
+          {...(itemProps as RadioGroupProps)}
+          {...rest}
+        ></Radio.Group>
+      );
       break;
     case 'search':
       return (
-        <Input.Search ref={ref} allowClear {...searchProps} {...rest}></Input.Search>
+        <Input.Search
+          ref={ref}
+          allowClear
+          {...(itemProps as SearchProps)}
+          {...rest}
+        ></Input.Search>
       );
       break;
     case 'select':
-      return <Select ref={ref} {...selectProps} {...rest}></Select>;
+      return (
+        <Select ref={ref} {...(itemProps as SelectProps)} {...rest}></Select>
+      );
       break;
     case 'textArea':
       return (
         <Input.TextArea
           ref={ref}
           allowClear
-          {...textAreaProps}
+          {...(itemProps as TextAreaProps)}
           {...rest}
         ></Input.TextArea>
       );
       break;
-    case 'time':
-      return (
-        <Tooltip title={timeProps?.title}>
-          <TimePicker ref={ref} {...timeProps} {...rest}></TimePicker>;
-        </Tooltip>
-      );
-      break;
-    case 'timeRange':
-      return (
-        <Tooltip title={timeRangeProps?.title}>
-          <TimePicker.RangePicker
-            ref={ref}
-            {...timeRangeProps}
-            {...rest}
-          ></TimePicker.RangePicker>
-        </Tooltip>
-      );
-      break;
+    // case 'time':
+    //   const { title: timeTitle, ...timeProps } = itemProps as TimeProps;
+    //   return (
+    //     <Tooltip title={timeTitle}>
+    //       <TimePicker ref={ref} {...timeProps} {...rest}></TimePicker>;
+    //     </Tooltip>
+    //   );
+    //   break;
+    // case 'timeRange':
+    //   const { title: timeRangeTitle, ...timeRangeProps } =
+    //     itemProps as TimeRangeProps;
+    //   return (
+    //     <Tooltip title={timeRangeTitle}>
+    //       <TimePicker.RangePicker
+    //         ref={ref}
+    //         {...timeRangeProps}
+    //         {...rest}
+    //       ></TimePicker.RangePicker>
+    //     </Tooltip>
+    //   );
+    //   break;
     default:
-      return <Input ref={ref} allowClear {...inputProps} {...rest}></Input>;
+      return (
+        <Input
+          ref={ref}
+          allowClear
+          {...(itemProps as InputProps)}
+          {...rest}
+        ></Input>
+      );
   }
 });
 
