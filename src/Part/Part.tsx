@@ -107,6 +107,19 @@ const Part = forwardRef<PartRef, PartProps>((props, ref) => {
         ></Input.TextArea>
       );
       break;
+
+    // case 'dateRange':
+    //   const { title: rangeTitle, ...rangeProps } = itemProps as DateRangeProps;
+    //   return (
+    //     <Tooltip title={rangeTitle}>
+    //       <DatePicker.RangePicker
+    //         ref={ref}
+    //         {...rangeProps}
+    //         {...rest}
+    //       ></DatePicker.RangePicker>
+    //     </Tooltip>
+    //   );
+    //   break;
     // case 'time':
     //   const { title: timeTitle, ...timeProps } = itemProps as TimeProps;
     //   return (
