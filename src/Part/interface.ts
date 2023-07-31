@@ -106,5 +106,6 @@ export interface PartProps {
     | SearchProps
     | SelectProps
     | TextAreaProps
-    | TimeProps;
+    | TimeProps
+    | TimeRangeProps;
 }
