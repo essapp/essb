@@ -1,0 +1,1 @@
+export { TimePicker as Time } from "ant-design-vue";

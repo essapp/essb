@@ -1,0 +1,12 @@
+<link rel="shortcut icon" href="/favicon.ico">
+<script>
+  var observer = new MutationObserver(function(mutations) {
+    if (document.title.match(/Storybook$/)) {
+      document.title = "易智捷科技";
+    }
+  }).observe(document.querySelector("title"), {
+    childList: true,
+    subtree: true,
+    characterData: true
+  });
+</script>

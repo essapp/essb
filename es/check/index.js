@@ -1,0 +1,1 @@
+export { Checkbox as Check } from "ant-design-vue";

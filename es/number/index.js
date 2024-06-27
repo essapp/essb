@@ -1,0 +1,1 @@
+export { InputNumber as Number } from "ant-design-vue";

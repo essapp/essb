@@ -1,0 +1,1 @@
+export { Table } from "ant-design-vue";
