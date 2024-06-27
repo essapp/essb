@@ -1,17 +1,37 @@
 <template>
-  <Table bordered :data-source="dataSource" :columns="columns">
+  <Table
+    bordered
+    :data-source="dataSource"
+    :custom-row="onRow"
+    :columns="columns"
+  >
     <template #bodyCell="{ column, text, record }">
-      <template v-if="column.dataIndex === 'name'">
+      <template v-if="column.editable">
         <div class="editable-cell">
-          <div v-if="editableData[record.key]" class="editable-cell-input-wrapper">
-            <a-input v-model:value="editableData[record.key].name" @pressEnter="save(record.key)" />
-            <check-outlined class="editable-cell-icon-check" @click="save(record.key)" />
+          <div
+            v-if="editableData[record.key]"
+            class="editable-cell-input-wrapper"
+          >
+            <div v-if="column.fieldProps.itemType === 'check'">
+              <Check :defaultChecked="text"></Check>
+            </div>
+            <div v-else>
+              <Input :default-value="text" />
+            </div>
           </div>
           <div v-else class="editable-cell-text-wrapper">
-            {{ text || ' ' }}
-            <edit-outlined class="editable-cell-icon" @click="edit(record.key)" />
+            <div v-if="column.fieldProps.itemType === 'check'">
+              <Check :checked="text"></Check>
+            </div>
+            <div v-else>{{ text || " " }}</div>
           </div>
         </div>
+      </template>
+      <template v-else>
+        <div v-if="column.fieldProps.itemType === 'check'">
+          <Check :checked="text"></Check>
+        </div>
+        <div v-else>{{ text || " " }}</div>
       </template>
     </template>
   </Table>
@@ -20,8 +40,7 @@
 <script setup lang="ts">
 import { reactive, ref } from "vue";
 import type { Ref, UnwrapRef } from "vue";
-import { Input, Table } from "..";
-import { CheckOutlined, EditOutlined } from "@ant-design/icons-vue";
+import { Check,Input, Table } from "..";
 import { cloneDeep } from "lodash-es";
 
 interface DataItem {
@@ -33,22 +52,36 @@ interface DataItem {
 }
 
 const columns = [
-  {
+{
     title: "name",
     dataIndex: "name",
     width: "30%",
+    editable: true,
+    fieldProps: {
+      itemType: "input",
+    },
   },
   {
     title: "age",
     dataIndex: "age",
+    fieldProps: {
+      itemType: "number",
+    },
   },
   {
     title: "address",
     dataIndex: "address",
+    fieldProps: {
+      itemType: "input",
+    },
   },
   {
     title: "default",
     dataIndex: "default",
+    editable: true,
+    fieldProps: {
+      itemType: "check",
+    },
   },
 ];
 const dataSource: Ref<DataItem[]> = ref([
@@ -64,7 +97,7 @@ const dataSource: Ref<DataItem[]> = ref([
     name: "Edward King 1",
     age: 32,
     address: "London, Park Lane no. 1",
-    default: true,
+    default: false,
   },
 ]);
 const editableData: UnwrapRef<Record<string, DataItem>> = reactive({});
@@ -75,10 +108,14 @@ const edit = (key: string) => {
   );
 };
 const save = (key: string) => {
-  Object.assign(
-    dataSource.value.filter((item) => key === item.key)[0],
-    editableData[key]
-  );
-  delete editableData[key];
+  
+};
+const onRow = (record: DataItem) => {
+  return {
+    onclick: () => edit(record.key),
+    onfocus: () => edit(record.key),
+    onMouseenter: () => edit(record.key),
+    onMouseleave: () => save(record.key),
+  };
 };
 </script>

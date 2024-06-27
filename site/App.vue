@@ -4,60 +4,17 @@
       algorithm: theme.darkAlgorithm,
     }"
   >
-    <Table
-      bordered
-      :data-source="dataSource"
-      :customRow="onRow"
-      :columns="columns"
-    >
-      <template #bodyCell="{ column, text, record }">
-        <template v-if="column.editable">
-          <div class="editable-cell">
-            <div
-              v-if="editableData[record.key]"
-              class="editable-cell-input-wrapper"
-            >
-              <div v-if="column.fieldProps.itemType === 'check'">
-                <Check
-                  v-model:checked="editableData[record.key].default"
-                ></Check>
-              </div>
-              <div v-else>
-                <Input
-                  v-model:value="editableData[record.key].name"
-                  @pressEnter="save(record.key)"
-                />
-              </div>
-            </div>
-            <div v-else class="editable-cell-text-wrapper">
-              <div v-if="column.fieldProps.itemType === 'check'">
-                <Check :checked="text"></Check>
-              </div>
-              <div v-else>{{ text || " " }}</div>
-            </div>
-          </div>
-        </template>
-        <template v-else>
-          <div v-if="column.fieldProps.itemType === 'check'">
-            <Check :checked="text"></Check>
-          </div>
-          <div v-else>{{ text || " " }}</div>
-        </template>
-      </template>
-    </Table>
-    <!-- <Etable bordered :data-source="dataSource" :columns="columns"></Etable> -->
+    <Etable></Etable>
   </ConfigProvider>
 </template>
 
 <script setup lang="ts">
-import { computed, reactive, ref } from "vue";
+import { reactive, ref } from "vue";
 import type { Ref, UnwrapRef } from "vue";
 import {
   ConfigProvider,
-  Check,
-  Input,
   theme,
-  Table,
+  Etable,
   TableColumnType,
 } from "../src";
 import { cloneDeep } from "lodash-es";
