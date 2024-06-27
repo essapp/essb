@@ -40,7 +40,7 @@
 <script setup lang="ts">
 import { reactive, ref } from "vue";
 import type { Ref, UnwrapRef } from "vue";
-import { Check,Input, Table } from "..";
+import { Check, Input, Table } from "..";
 import { cloneDeep } from "lodash-es";
 
 interface DataItem {
@@ -52,7 +52,7 @@ interface DataItem {
 }
 
 const columns = [
-{
+  {
     title: "name",
     dataIndex: "name",
     width: "30%",
@@ -108,7 +108,7 @@ const edit = (key: string) => {
   );
 };
 const save = (key: string) => {
-  
+  console.log(editableData[key]);
 };
 const onRow = (record: DataItem) => {
   return {
