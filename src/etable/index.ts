@@ -28,7 +28,7 @@ export type EtableProps<
   RecordType extends DefaultRecordType = DefaultRecordType,
 > = TableProps<RecordType> &
   Partial<{
-    columns: TableColumnType<RecordType>[];
+    // columns: TableColumnType<RecordType>[];
     mode?: "modify" | "query";
     // getRows?: (record:RecordType[]) => RecordType[];
     // cardBordered: boolean | { search?: boolean; table?: boolean };

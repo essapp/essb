@@ -5,6 +5,7 @@
     }"
   >
     <Etable :dataSource :columns></Etable>
+    <Hrow v-bind="{...views}"></Hrow>
   </ConfigProvider>
 </template>
 
@@ -18,29 +19,36 @@ import {
   TableColumnType,
 } from "../src";
 import { cloneDeep } from "lodash-es";
-// import { EHrow } from "../src";
-// import type { EHrowProps } from "../src";
+import { Hrow } from "../src";
+import type { HrowProps } from "../src";
 
-// const views: EHrowProps = {
-//   items: [
-//     {
-//       id: 0,
-//       label: "账号",
-//       rowProps: {
-//         itemType: "input",
-//         itemProps: { type: "text" },
-//       },
-//     },
-//     {
-//       id: 1,
-//       label: "密码",
-//       rowProps: {
-//         itemType: "input",
-//         itemProps: { type: "password" },
-//       },
-//     },
-//   ],
-// };
+const views: HrowProps = {
+  items: [
+    {
+      id: 0,
+      label: "账号",
+      filedProps: {
+        itemType: "input",
+        itemProps: { type: "text" },
+      },
+    },
+    {
+      id: 1,
+      label: "密码",
+      filedProps: {
+        itemType: "input",
+        itemProps: { type: "password" },
+      },
+    },
+    {
+      id: 3,
+      filedProps: {
+        itemType: "number",
+        itemProps: { type: "number" },
+      },
+    },
+  ],
+};
 
 interface DataItem extends Record<string, unknown> {
   key: string;

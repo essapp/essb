@@ -21,7 +21,7 @@ export const Primary: Story = {
       {
         id: 0,
         label: "name",
-        rowProps: { itemType: "input", itemProps: { type: "button" } },
+        fieldProps: { itemType: "input", itemProps: { type: "button" } },
       },
     ],
   },

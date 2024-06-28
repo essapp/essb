@@ -5,7 +5,7 @@
     :custom-row="onRow"
     :columns
   >
-    <template #bodyCell="{ column, text, record }">
+    <template #bodyCell="{ column, text, record, index }">
       <template v-if="column.editable">
         <div class="editable-cell">
           <div
