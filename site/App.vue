@@ -4,7 +4,7 @@
       algorithm: theme.darkAlgorithm,
     }"
   >
-    <Etable></Etable>
+    <Etable :dataSource :columns></Etable>
   </ConfigProvider>
 </template>
 
@@ -41,7 +41,7 @@ import { cloneDeep } from "lodash-es";
 //     },
 //   ],
 // };
-interface DataItem {
+interface DataItem extends Record<string, unknown> {
   key: string;
   name: string;
   age: number;
@@ -81,7 +81,7 @@ const columns: TableColumnType<Record<string, unknown>>[] = [
     },
   },
 ];
-const dataSource: Ref<DataItem[]> = ref([
+const dataSource: DataItem[] = [
   {
     key: "0",
     name: "Edward King 0",
@@ -96,7 +96,7 @@ const dataSource: Ref<DataItem[]> = ref([
     address: "London, Park Lane no. 1",
     default: false,
   },
-]);
+];
 
 const editableData: UnwrapRef<Record<string, DataItem>> = reactive({});
 

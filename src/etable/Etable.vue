@@ -1,9 +1,9 @@
 <template>
   <Table
     bordered
-    :data-source="dataSource"
+    :data-source="datasource"
     :custom-row="onRow"
-    :columns="columns"
+    :columns
   >
     <template #bodyCell="{ column, text, record }">
       <template v-if="column.editable">
@@ -40,10 +40,10 @@
 <script setup lang="ts">
 import { reactive, ref } from "vue";
 import type { Ref, UnwrapRef } from "vue";
-import { Check, Input, Table } from "..";
+import { Check, EtableProps, Input, Table } from "..";
 import { cloneDeep } from "lodash-es";
 
-interface DataItem {
+interface DataItem extends Record<string, unknown> {
   key: string;
   name: string;
   age: number;
@@ -51,71 +51,28 @@ interface DataItem {
   default: boolean;
 }
 
-const columns = [
-  {
-    title: "name",
-    dataIndex: "name",
-    width: "30%",
-    editable: true,
-    fieldProps: {
-      itemType: "input",
-    },
-  },
-  {
-    title: "age",
-    dataIndex: "age",
-    fieldProps: {
-      itemType: "number",
-    },
-  },
-  {
-    title: "address",
-    dataIndex: "address",
-    fieldProps: {
-      itemType: "input",
-    },
-  },
-  {
-    title: "default",
-    dataIndex: "default",
-    editable: true,
-    fieldProps: {
-      itemType: "check",
-    },
-  },
-];
-const dataSource: Ref<DataItem[]> = ref([
-  {
-    key: "0",
-    name: "Edward King 0",
-    age: 32,
-    address: "London, Park Lane no. 0",
-    default: true,
-  },
-  {
-    key: "1",
-    name: "Edward King 1",
-    age: 32,
-    address: "London, Park Lane no. 1",
-    default: false,
-  },
-]);
+const { columns, dataSource, ...props } = withDefaults(
+  defineProps<EtableProps>(),
+  {}
+);
+
+const datasource: Ref<DataItem[]> = ref(dataSource);
 const editableData: UnwrapRef<Record<string, DataItem>> = reactive({});
 
 const edit = (key: string) => {
   editableData[key] = cloneDeep(
-    dataSource.value.filter((item) => key === item.key)[0]
+    datasource.value.filter((item) => key === item.key)[0]
   );
 };
-const save = (key: string) => {
-  console.log(editableData[key]);
+const save = (record: DataItem) => {
+  console.log(editableData[record.key]);
 };
 const onRow = (record: DataItem) => {
   return {
     onclick: () => edit(record.key),
     onfocus: () => edit(record.key),
     onMouseenter: () => edit(record.key),
-    onMouseleave: () => save(record.key),
+    onMouseleave: () => save(record),
   };
 };
 </script>
