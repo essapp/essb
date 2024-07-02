@@ -1,3 +1,4 @@
+export { App, type AppProps } from "./app";
 export { Button, type ButtonProps } from "./button";
 export { Check, type CheckProps } from "./check";
 export { ConfigProvider } from "./configprovider";

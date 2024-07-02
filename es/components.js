@@ -1,3 +1,4 @@
+export { App } from "./app";
 export { Button } from "./button";
 export { Check } from "./check";
 export { ConfigProvider } from "./configprovider";

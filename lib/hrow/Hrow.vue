@@ -5,9 +5,9 @@
         ><Row
           ><Col :span="8"><Label :text="item.label"></Label></Col
           ><Col :span="16"
-            ><Field v-bind="item.rowProps"></Field></Col></Row></Col
+            ><Field v-bind="item.fieldProps"></Field></Col></Row></Col
       ><Col v-else v-bind="rownum"
-        ><Field v-bind="item.rowProps"></Field></Col></template
+        ><Field v-bind="item.fieldProps"></Field></Col></template
   ></Row>
 </template>
 
