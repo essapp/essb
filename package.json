@@ -16,7 +16,7 @@
     "ant-design-vue": "^4.2.3"
   },
   "devDependencies": {
-    "@chromatic-com/storybook": "^1.5.0",
+    "@chromatic-com/storybook": "^1.6.0",
     "@storybook/addon-essentials": "^8.1.11",
     "@storybook/addon-interactions": "^8.1.11",
     "@storybook/addon-links": "^8.1.11",
@@ -34,9 +34,9 @@
     "lodash-es": "^4.17.21",
     "storybook": "^8.1.11",
     "storybook-dark-mode": "^4.0.2",
-    "typescript": "^5.5.2",
-    "vite": "^5.3.1",
-    "vue": "^3.4.30",
-    "vue-tsc": "^2.0.22"
+    "typescript": "^5.5.3",
+    "vite": "^5.3.3",
+    "vue": "^3.4.31",
+    "vue-tsc": "^2.0.24"
   }
 }
