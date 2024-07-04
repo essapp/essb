@@ -1,0 +1,1 @@
+export { QRCode as Qr } from 'ant-design-vue';

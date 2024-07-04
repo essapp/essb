@@ -1,0 +1,1 @@
+export { QRCode as Qr,type QRCodeProps as QrProps } from 'ant-design-vue';
