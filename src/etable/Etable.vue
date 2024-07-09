@@ -1,22 +1,14 @@
 <template>
-  <Table
-    bordered
-    :data-source="datasource"
-    :custom-row="onRow"
-    :columns
-  >
+  <Table bordered :data-source="datasource" :custom-row="onRow" :columns>
     <template #bodyCell="{ column, text, record, index }">
       <template v-if="column.editable">
         <div class="editable-cell">
-          <div
-            v-if="editableData[record.key]"
-            class="editable-cell-input-wrapper"
-          >
+          <div v-if="editableData[record.key]" class="editable-cell-input-wrapper">
             <div v-if="column.fieldProps.itemType === 'check'">
-              <Check :defaultChecked="text"></Check>
+              <Check :defaultChecked="text" v-model:checked="editableData[record.key][column.dataIndex]"></Check>
             </div>
             <div v-else>
-              <Input :default-value="text" />
+              <Input :default-value="text" v-model:value="editableData[record.key][column.dataIndex]" />
             </div>
           </div>
           <div v-else class="editable-cell-text-wrapper">
@@ -38,41 +30,50 @@
 </template>
 
 <script setup lang="ts">
-import { reactive, ref } from "vue";
-import type { Ref, UnwrapRef } from "vue";
-import { Check, EtableProps, Input, Table } from "..";
-import { cloneDeep } from "lodash-es";
+  import { reactive, ref } from "vue";
+  import type { Ref, UnwrapRef } from "vue";
+  import { Check, EtableProps, Input, Table } from "..";
+  import { cloneDeep } from "lodash-es";
 
-interface DataItem extends Record<string, unknown> {
-  key: string;
-  name: string;
-  age: number;
-  address: string;
-  default: boolean;
-}
+  interface DataItem extends Record<string, unknown> {
+    key: string;
+    name: string;
+    age: number;
+    address: string;
+    default: boolean;
+  }
 
-const { columns, dataSource, ...props } = withDefaults(
-  defineProps<EtableProps>(),
-  {}
-);
-
-const datasource: Ref<DataItem[]> = ref(dataSource);
-const editableData: UnwrapRef<Record<string, DataItem>> = reactive({});
-
-const edit = (key: string) => {
-  editableData[key] = cloneDeep(
-    datasource.value.filter((item) => key === item.key)[0]
+  const { columns, dataSource, ...props } = withDefaults(
+    defineProps < EtableProps > (),
+    {}
   );
-};
-const save = (record: DataItem) => {
-  console.log(editableData[record.key]);
-};
-const onRow = (record: DataItem) => {
-  return {
-    onclick: () => edit(record.key),
-    onfocus: () => edit(record.key),
-    onMouseenter: () => edit(record.key),
-    onMouseleave: () => save(record),
+
+  const datasource: Ref<DataItem[]> = ref(dataSource);
+  const editableData: UnwrapRef<Record<string, DataItem>> = reactive({});
+
+  const edit = (key: string) => {
+    editableData[key] = cloneDeep(
+      datasource.value.filter((item) => key === item.key)[0]
+    );
   };
-};
+  const save = (record: DataItem, key: string) => {
+    console.log("record.key:", record.key)
+    console.log(editableData[record.key]);
+
+    console.log("record之前:", record)
+
+    Object.assign(datasource.value.filter(item => key === item.key)[0], editableData[key]);
+    delete editableData[key];
+    console.log("record之后:", record)
+
+
+  };
+  const onRow = (record: DataItem) => {
+    return {
+      onclick: () => edit(record.key),
+      onfocus: () => edit(record.key),
+      onMouseenter: () => edit(record.key),
+      onMouseleave: () => save(record, record.key),
+    };
+  };
 </script>
