@@ -1,0 +1,1 @@
+export { Switch } from "ant-design-vue";

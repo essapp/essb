@@ -1,0 +1,1 @@
+export { Tree } from "ant-design-vue";

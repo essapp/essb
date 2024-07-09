@@ -1,0 +1,1 @@
+export { DatePicker as Date } from "ant-design-vue";

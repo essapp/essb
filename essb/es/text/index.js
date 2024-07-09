@@ -1,0 +1,1 @@
+export { Textarea as Text } from "ant-design-vue";

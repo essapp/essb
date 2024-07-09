@@ -1,0 +1,1 @@
+export { TimeRangePicker as Range } from "ant-design-vue";
