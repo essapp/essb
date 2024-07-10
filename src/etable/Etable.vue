@@ -43,6 +43,7 @@
     default: boolean;
   }
 
+
   const { columns, dataSource, ...props } = withDefaults(
     defineProps < EtableProps > (),
     {}
@@ -56,6 +57,7 @@
       datasource.value.filter((item) => key === item.key)[0]
     );
   };
+
   const save = (record: DataItem, key: string) => {
     console.log("record.key:", record.key)
     console.log(editableData[record.key]);
@@ -66,8 +68,9 @@
     delete editableData[key];
     console.log("record之后:", record)
 
-
+    console.log("datasource:",datasource)
   };
+
   const onRow = (record: DataItem) => {
     return {
       onclick: () => edit(record.key),

@@ -6,6 +6,7 @@
   >
     <Etable :dataSource :columns></Etable>
     <Hrow v-bind="{...views}"></Hrow>
+    <button @click="ji">点击</button>
   </ConfigProvider>
 </template>
 
@@ -108,6 +109,14 @@ const dataSource: DataItem[] = [
 ];
 
 const editableData: UnwrapRef<Record<string, DataItem>> = reactive({});
+
+function ji(){
+   console.log("父主件的dataSource:",dataSource);
+};
+
+function handleCustomEvent(payload) {
+      console.log(payload); // 输出 'Hello from child'
+    };
 
 const edit = (key: string) => {
   editableData[key] = cloneDeep(
