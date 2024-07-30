@@ -87,7 +87,8 @@
     </div>
     <div class="middle">
       <el-table border size="small" row-key="id" :data="tableList" fit highlight-current-row highlight-selection-row
-        @selection-change="selectChange" scrollable height="100%">
+        @selection-change="selectChange" scrollable height="100%" @row-click="handleRowClick"
+        :row-class-name="tableRowClassName" @cell-mouse-enter="handleCellMouseEnter">
         <el-table-column type="selection" width="55" />
         <el-table-column label="序号" width="100" align="center">
           <template #default="scope">
@@ -182,6 +183,8 @@
 
   const iconshow = ref(true)
 
+  const i_row = ref(null)
+
   console.log("qqq")
 
   // 表格数据
@@ -203,13 +206,32 @@
   onMounted(() => {
   })
 
+  const tableRowClassName = ({ row, rowIndex }) => {
+    //在el-table中加:row-class-name="tableRowClassName" :current-row-key="NowRowIndex"
+    //用于在新建TABLE时就给row.row_index赋值行上去；这样在其它地方就可以通过row.row_index取到行
+    row.row_index = rowIndex;
+  }
+
+
+  const handleRowClick = (row) => {
+    console.log('单击时当前行号:row.row_index..........', row.row_index);
+    i_row.value = row.row_index
+  }
+
+  // const handleCellMouseEnter = (index, row, column, cell, event) => {
+  const handleCellMouseEnter = () => {
+    // console.log('移动时当前行号:row.row_index..........', row.row_index);
+  }
+
   /**
    * 新增一行记录
    */
   const handleAddRow = (index, row, event) => {
+    console.log("新增行记录的行号是row.row_index:", row.row_index)
     console.log("row:", row)
     console.log("event:", event)
-    tableList.value.splice(index + 1, 0, {
+    // tableList.value.splice(index + 1, 0, {//index时为在最后一行加一行
+    tableList.value.splice(row.row_index + 1, 0, {//当前行下加一行
       'id': parseInt(Math.random() * 10000) + '-' + new Date().getTime(), // 1234-1701741061535
       'name': '',
       'sex': true
@@ -268,18 +290,35 @@
     state_button.accept = false
     state_button.cancel = false
 
+    var i = 0
     tableList.value.forEach(item => {
       item.isEdit = true
+      i++
     })
+    console.log("i:", i)
     console.log("this.tableList:", tableList)
 
-    const newRow = {
-      id: parseInt(Math.random() * 10000) + '-' + new Date().getTime(),
-      name: '',
-      sex: true,
-      isEdit: true
+    if (i_row.value == null) {
+      const newRow = {
+        id: parseInt(Math.random() * 10000) + '-' + new Date().getTime(),
+        name: '',
+        sex: true,
+        isEdit: true
+      }
+      tableList.value.push(newRow);
+    } else {
+      tableList.value.splice(i_row.value + 1, 0, {//当前行下加一行
+        'id': parseInt(Math.random() * 10000) + '-' + new Date().getTime(), // 1234-1701741061535
+        'name': '',
+        'sex': true,
+        isEdit: true
+      })
     }
-    tableList.value.push(newRow);
+    console.log("新增行记录的行号是i_row:", i_row.value)
+
+
+
+
   }
 
   /**
@@ -449,7 +488,10 @@
 </script>
 
 <style>
-  
+  .body {
+    height: 100%;
+  }
+
   .container {
     display: flex;
     height: 100%;
@@ -477,7 +519,7 @@
 
   .BrTable-do {
     white-space: nowrap;
-    margin-left:15px;
+    margin-left: 15px;
     /* background-color: #ffb91b; */
   }
 </style>
