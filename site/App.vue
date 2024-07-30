@@ -20,7 +20,11 @@
           </el-button>
           <el-button size="small" icon="el-icon-minus" type="primary" :disabled="state_button.handleRemoveTable" plain
             @click="handleRemoveTable()">
-            删除
+            多选删除
+          </el-button>
+          <el-button size="small" icon="el-icon-minus" type="primary" :disabled="state_button.rowRemoveTable" plain
+            @click="rowRemoveTable()">
+            单行删除
           </el-button>
           <el-button size="small" icon="el-icon-edit" type="primary" :disabled="state_button.handleEditTable" plain
             @click="handleEditTable()">
@@ -166,7 +170,8 @@
     accept: true,   //确认
     cancel: true,   //取消
     handleAddTable: false,   //新增
-    handleRemoveTable: false,//删除
+    handleRemoveTable: false,//多选删除
+    rowRemoveTable: true,//单行删除
     handleEditTable: false,  //编辑
     toggleFullScreen: false, //
     screen: false,
@@ -273,6 +278,7 @@
 
     state_button.query = true
     state_button.handleEditTable = true
+    state_button.rowRemoveTable=false
     state_button.accept = false
     state_button.cancel = false
 
@@ -330,6 +336,7 @@
     state_button.cancel = false
     state_button.handleAddTable = true
     state_button.handleRemoveTable = true
+    state_button.rowRemoveTable = true
     state_button.handleEditTable = true
 
     tableList.value = []; // 清空表格数据
@@ -348,7 +355,7 @@
   }
 
   /**
- * 删除选中行记录
+ * 多选删除选中行记录
  */
   const handleRemoveTable = () => {
     multipleSelection.value.forEach((item) => {
@@ -359,6 +366,18 @@
         tableList.value.splice(index, 1);
       }
     });
+  }
+
+
+  /**
+ * 单行删除选中行记录
+ */
+  const rowRemoveTable = () => {
+    console.log("i_row.value:", i_row.value)
+    if (i_row.value>=0 && i_row.value!=null) {
+      console.log("执行了")
+      tableList.value.splice(i_row.value, 1);
+    }
   }
 
   const toggleFullScreen = () => {
@@ -427,11 +446,11 @@
    * accept
    */
   const accept = () => {
-
     state_button.query = false
     state_button.handleEditTable = false
     state_button.handleAddTable = false
     state_button.handleRemoveTable = false
+    state_button.rowRemoveTable=true
     state_button.accept = true
     state_button.cancel = true
     tableList.value.forEach(item => {
@@ -455,6 +474,7 @@
     state_button.handleEditTable = false
     state_button.handleAddTable = false
     state_button.handleRemoveTable = false
+    state_button.rowRemoveTable=true
     state_button.accept = true
     state_button.cancel = true
 
