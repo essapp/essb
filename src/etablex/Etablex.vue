@@ -99,7 +99,7 @@
   // const selectedRowKeys=[]
 
   const rowSelection: TableProps['rowSelection'] = {
-    selectedRowKeys,
+    // selectedRowKeys,
     onChange: (selectedRowKeys: string[], selectedRows: DataType[]) => {
       console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
       proxy.$emit('multipleSelection', selectedRows)
