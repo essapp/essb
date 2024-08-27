@@ -21,7 +21,7 @@ export type Option<RecordType extends DefaultRecordType = DefaultRecordType> = {
 //   valueType?: 'index' | 'indexBorder' | 'text' | 'select';
 //   search?: boolean;
 // };
-export type EtableProps<
+export type Etable1Props<
   RecordType extends DefaultRecordType = DefaultRecordType,
 > = TableProps<RecordType> &
   Partial<{
@@ -31,4 +31,4 @@ export type EtableProps<
     // cardBordered: boolean | { search?: boolean; table?: boolean };
   }>;
 
-export { default as Etable } from "./Etable.vue";
+export { default as Etable1 } from "./Etable1.vue";

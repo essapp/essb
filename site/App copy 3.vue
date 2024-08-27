@@ -13,10 +13,6 @@
     <template #icon>
       <PlusOutlined />
     </template>新增</a-button>
-  <a-button size="small" :disabled="state_button.handleRemoveTable" plain @click="handleRemoveTable()">
-    <template #icon>
-      <MinusOutlined />
-    </template>多行删除</a-button>
   <a-button size="small" :disabled="state_button.rowRemoveTable" plain @click="rowRemoveTable()">
     <template #icon>
       <MinusOutlined />
@@ -46,8 +42,7 @@
       <DownOutlined />
     </a-button>
   </a-dropdown>
-  <Etablex :dataSource :columns :tableEdit @getRecord="handleCustomEvent" @multipleSelection="funmultipleSelection">
-  </Etablex>
+  <Etablex :dataSource :columns :tableEdit @getRecord="handleCustomEvent"></Etablex>
 </template>
 
 <script setup lang="ts">
@@ -71,8 +66,6 @@
   const i_record = ref(null)
   const i_row = ref(null)
 
-  const multipleSelection = ref([])
-
   const state_button = reactive({
     accept: true,   //确认
     cancel: true,   //取消
@@ -86,7 +79,7 @@
     load: false
   });
 
-  const columns = ref([
+  const columns: TableColumnType<Record<string, unknown>>[] = [
     {
       title: "用户编码",//字段名称
       dataIndex: "userid",//字段
@@ -161,7 +154,7 @@
     {
       title: "注册时间",
       dataIndex: "datetime",
-      width: 330,
+      width: 150,
       editable: true,
       fieldProps: {
         show_state: "text",//显示时的组件形态
@@ -174,13 +167,13 @@
       width: 100,
       editable: true,
       fieldProps: {
-        show_state: "check",//显示时的组件形态
+        show_state: "text",//显示时的组件形态
         edit_state: "check"//编辑时的组件形态
       },
     },
-  ]);
+  ];
 
-  const dataSource = ref([
+  const dataSource: DataItem[] = [
     {
       // key: "0",
       userid: "id01",
@@ -192,7 +185,7 @@
       progress: 60,
       datetime: "2024-01-14 10:19:18",
       // datetime:"2024-01-14",
-      status: true,
+      status: "Y",
     },
     {
       // key: "1",
@@ -204,7 +197,7 @@
       num: 50,
       progress: 80,
       datetime: "2024-02-24 21:40:56",
-      status: true,
+      status: "Y",
     },
     {
       // key: "2",
@@ -216,13 +209,15 @@
       num: 50,
       progress: 100,
       datetime: "2024-03-24 22:40:56",
-      status: false,
+      status: "N",
     },
-  ]);
+  ];
 
   onMounted(() => {
     console.log("初始化")
   });
+
+
 
   const { proxy } = getCurrentInstance();
 
@@ -238,10 +233,6 @@
     console.log("测试组件返回的i_row信息:", i_row.value)
   }
 
-  const funmultipleSelection = (val) => {
-    multipleSelection.value = val
-  }
-
   /**
    * 整表新增一行记录
    */
@@ -255,26 +246,45 @@
     g_action_choice.value = 'insert'
 
     if (i_row.value == null) {
-      i_row.value = Number(dataSource.value.length - 1)//取最大行号
+      // console.log("dataSource.length11=", dataSource.length)
+      i_row.value = Number(dataSource.length - 1)//取最大行号
+      // console.log("i_row.value=", i_row.value)
     }
 
-    dataSource.value.splice(i_row.value + 1, 0, {//当前行下加一行
-      'userid': "",
-      'name': "",
-      'sex': "",
-      'email': "",
-      'age': "",
-      'num': "",
-      'progress': "",
-      'datetime': "",
-      'status': "",
+    const length = dataSource.length
+    dataSource.value.push({
+      // key: length === 0 ? '0' : dataSource[length - 1].key === undefined
+      //   ? length.toString() : (parseInt(dataSource[length - 1].key) + 1).toString(),
+      userid: "id03",
+      name: "Zx01",
+      sex: "女",
+      email: "332@qq.com",
+      age: 33,
+      num: 50,
+      progress: 100,
+      datetime: "2024-03-24 22:40:56",
+      status: "N",
     })
 
+    // dataSource.splice(i_row.value + 1, 0, {//当前行下加一行
+    //   'userid': "",
+    //   'name': "",
+    //   'sex': "",
+    //   'email': "",
+    //   'age': "",
+    //   'num': "",
+    //   'progress': "",
+    //   'datetime': "",
+    //   'status': "",
+    // })
+
+    console.log("dataSource.length222=", dataSource)
     proxy.$nextTick(() => {
       //input标签获取焦点
-      document.getElementById("userid" + Number((i_row.value + 1))).focus()
+      // document.getElementById("userid" + Number((i_row.value + 1))).focus()
     })
   }
+
 
   /**
    * 整表编辑
@@ -299,110 +309,11 @@
     })
   }
 
-  /**
-   * 查询
-   */
-  const query = () => {
-    state_button.accept = false
-    state_button.cancel = false
-    state_button.handleAddTable = true
-    state_button.handleRemoveTable = true
-    state_button.rowRemoveTable = true
-    state_button.handleEditTable = true
 
-    dataSource.value = []; // 清空表格数据
-    tableEdit.value = true//修改为编辑状态
-    g_action_choice.value = 'query'
-
-    const newRow = {
-      userid: "",
-      name: "",
-      sex: "",
-      email: "",
-      age: "",
-      num: "",
-      progress: "",
-      datetime: "",
-      status: "",
-    }
-    dataSource.value.push(newRow);
-    proxy.$nextTick(() => {
-      //input标签获取焦点
-      document.getElementById("userid" + Number((0))).focus()
-    })
-  }
-
-  /**
- * 多选删除选中行记录
- */
-  const handleRemoveTable = () => {
-    multipleSelection.value.forEach((item) => {
-      console.log("item:", item)
-      const index = dataSource.value.indexOf(item);
-      console.log("index:", index)
-      if (index !== -1) {
-        dataSource.value.splice(index, 1);
-      }
-    });
-  }
-
-  /**
- * 单行删除选中行记录
- */
-  const rowRemoveTable = () => {
-    console.log("i_row.value:", i_row.value)
-    if (i_row.value >= 0 && i_row.value != null) {
-      console.log("执行了")
-      dataSource.value.splice(i_row.value, 1);
-    }
-  }
-
-  const getData = () => {
-    dataSource.value = [
-      {
-        // key: "0",
-        userid: "id01",
-        name: "Edward King 0",
-        sex: "男",
-        email: "123@qq.com",
-        age: 32,
-        num: 30,
-        progress: 60,
-        datetime: "2024-01-14 10:19:18",
-        // datetime:"2024-01-14",
-        status: true,
-      },
-      {
-        // key: "1",
-        userid: "id02",
-        name: "Edward King 1",
-        sex: "女",
-        email: "232@qq.com",
-        age: 33,
-        num: 50,
-        progress: 80,
-        datetime: "2024-02-24 21:40:56",
-        status: true,
-      },
-      {
-        // key: "2",
-        userid: "id03",
-        name: "Zx01",
-        sex: "女",
-        email: "332@qq.com",
-        age: 33,
-        num: 50,
-        progress: 100,
-        datetime: "2024-03-24 22:40:56",
-        status: false,
-      },
-    ]
-  }
   /**
    * accept
    */
   const accept = () => {
-    multipleSelection.value=[]//清空要删除的数组
     state_button.query = false
     state_button.handleEditTable = false
     state_button.handleAddTable = false
@@ -414,8 +325,7 @@
     tableEdit.value = false
     i_row.value = null
     if (g_action_choice.value == 'query') {
-      getData();
-
+      // getData();
     }
     if (g_action_choice.value == 'modify') {
       //调用修改的函数

@@ -4,6 +4,8 @@ export { Check, type CheckProps } from "./check";
 export { ConfigProvider } from "./configprovider";
 export { Date, type DateProps } from "./date";
 export { Etable, type EtableProps } from "./etable";
+export { Etablex, type EtablexProps } from "./etablex";
+export { Etable1, type Etable1Props } from "./etable1";
 export { Field, type FieldProps, type ItemProps, type ItemType } from "./field";
 export { Form, type FormProps } from "./form";
 export { Hrow, type HrowProps } from "./hrow";
