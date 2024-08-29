@@ -8,26 +8,35 @@
       <template v-if="tableEdit && column.editable">
         <div v-if="column.fieldProps.edit_state === 'input'">
           <a-input :id="column.dataIndex+index" v-model:value="record[column.dataIndex]" placeholder="input search text"
-            style="margin: -5px 0" />
+            style="margin: -5px 0" @change="onChange(record, index,column, text)" @blur="blur(record, index,column, text)" 
+            @focus="focus(record,index,column, text)" @input="input(record,index,column, text)"/>
         </div>
         <div v-if="column.fieldProps.edit_state === 'searchinput'">
           <a-input-search :id="column.dataIndex+index" v-model:value="record[column.dataIndex]"
-            placeholder="input search text" style="margin: -5px 0" @search="onSearch" />
+            placeholder="input search text" style="margin: -5px 0" @search="onSearch" 
+            @change="onChange(record, index,column, text)" @blur="blur(record, index,column, text)" 
+            @focus="focus(record,index,column, text)" @input="input(record,index,column, text)"/>
         </div>
         <div v-if="column.fieldProps.edit_state === 'check'">
           <a-checkbox :id="column.dataIndex+index" :defaultChecked="text"
-            v-model:checked="record[column.dataIndex]"></a-checkbox>
+            v-model:checked="record[column.dataIndex]"
+            @change="onChange(record, index,column, text)" @blur="blur(record, index,column, text)" 
+            @focus="focus(record,index,column, text)" @input="input(record,index,column, text)"></a-checkbox>
         </div>
         <div v-if="column.fieldProps.edit_state === 'datetime'">
           <a-date-picker :id="column.dataIndex+index" :default-value="text ? dayjs(text, 'YYYY-MM-DD HH:mm:ss') : null"
-            v-model:value="record[column.dataIndex]" value-format="YYYY-MM-DD HH:mm:ss" show-time />
+            v-model:value="record[column.dataIndex]" value-format="YYYY-MM-DD HH:mm:ss" show-time 
+            @change="onChange(record, index,column, text)" @blur="blur(record, index,column, text)" 
+            @focus="focus(record,index,column, text)" @input="input(record,index,column, text)"/>
           <!-- <a-date-picker :value="record[column.dataIndex] ? dayjs(record[column.dataIndex], 'YYYY-MM-DD') : null"/> -->
         </div>
 
         <div v-if="column.fieldProps.edit_state === 'select'">
           <a-select :id="column.dataIndex+index" ref="select" :default-value="text"
             v-model:value="record[column.dataIndex]" style="width: 120px"
-            :options="column.fieldProps.options"></a-select>
+            :options="column.fieldProps.options"
+            @change="onChange(record, index,column, text)" @blur="blur(record, index,column, text)" 
+            @focus="focus(record,index,column, text)" @input="input(record,index,column, text)"></a-select>
         </div>
         <div v-if="column.fieldProps.edit_state === 'text'">{{ record[column.dataIndex] || " " }}</div>
 
@@ -87,14 +96,34 @@
   const onRow = (record, index, column, text) => {
     return {
       onclick: () => {
-        console.log("record:", record)
-        console.log("index:", index)
-        console.log("column:", column)
-        console.log("text:", text)
+        // console.log("record:", record)
+        // console.log("index:", index)
+        // console.log("column:", column)
+        // console.log("text:", text)
         getRecord(record, index)
       },
     }
   };
+
+  const onChange=(record, index, column, text)=>{
+    // console.log("onChange:")
+    proxy.$emit('onChange', record, index, column, text)
+  }
+  
+  const blur=(record, index, column, text)=>{
+    // console.log("当选择器的输入框失去焦点时触发 after field:",record, index)
+    proxy.$emit('after_field', record, index, column, text)
+  }
+
+  const focus=(record,index, column, text)=>{
+    // console.log("当选择器的输入框获得焦点时触发,执行行了before field; record值:",record,"    ----index值:",index)
+    proxy.$emit('before_field', record, index, column, text)
+  }
+
+  const input=(record,index, column, text)=>{
+    // console.log("在 Input 值改变时触发,执行行了input; record值:",record,"    ----index值:",index)
+    proxy.$emit('input', record, index, column, text)
+  }
 
   // const selectedRowKeys=[]
 

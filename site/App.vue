@@ -46,7 +46,8 @@
       <DownOutlined />
     </a-button>
   </a-dropdown>
-  <Etablex :dataSource :columns :tableEdit @getRecord="handleCustomEvent" @multipleSelection="funmultipleSelection">
+  <Etablex :dataSource :columns :tableEdit @getRecord="handleCustomEvent" @multipleSelection="funmultipleSelection"
+    @onChange="onChange" @after_field="after_field" @before_field="before_field" @input="input">
   </Etablex>
 </template>
 
@@ -233,6 +234,25 @@
     i_row.value = index
   }
 
+  const onChange = (record, index, column, text) => {
+    console.log("仅当 modelValue 改变时，当输入框失去焦点或用户按Enter时触发执行了onChange   record的值:", 
+    record, "....index:", index, "column:",column, "----text:",text)
+  }
+
+  const before_field = (record, index, column, text) => {
+    console.log("当选择器的输入框失去焦点时触发 after field:", record, index, column, text)
+  }
+
+  const after_field = (record, index, column, text) => {
+    console.log("当选择器的输入框获得焦点时触发,执行行了before field; record值:", record,
+      "    ----index值:", index, "column:",column, "----text:",text)
+    }
+
+  const input = (record, index, column, text) => {
+    console.log("在 Input 值改变时触发,执行行了input; record值:",record,
+    "    ----index值:",index, "-----column:",column, "----text:",text)
+  }
+
   const dj = () => {
     console.log("测试组件返回的行信息:", i_record.value)
     console.log("测试组件返回的i_row信息:", i_row.value)
@@ -402,7 +422,7 @@
    * accept
    */
   const accept = () => {
-    multipleSelection.value=[]//清空要删除的数组
+    multipleSelection.value = []//清空要删除的数组
     state_button.query = false
     state_button.handleEditTable = false
     state_button.handleAddTable = false
