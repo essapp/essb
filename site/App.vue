@@ -46,8 +46,9 @@
       <DownOutlined />
     </a-button>
   </a-dropdown>
-  <Etablex :dataSource :columns :tableEdit @getRecord="handleCustomEvent" @multipleSelection="funmultipleSelection"
-    @onChange="onChange" @after_field="after_field" @before_field="before_field" @input="input">
+  <Etablex :dataSource :columns :tableEdit @getRecord="handleCustomEvent" 
+    @multipleSelection="funmultipleSelection"
+    @onChange="onChange" @after_field="after_field" @before_field="before_field">
   </Etablex>
 </template>
 
@@ -144,6 +145,8 @@
       dataIndex: "num",
       width: 150,
       editable: true,
+      // defaultSortOrder: 'descend',
+      // sorter: (a, b) => a.num - b.num,
       fieldProps: {
         show_state: "text",//显示时的组件形态
         edit_state: "input"//编辑时的组件形态
@@ -184,7 +187,7 @@
   const dataSource = ref([
     {
       // key: "0",
-      userid: "id01",
+      userid: 101,
       name: "Edward King 0",
       sex: "男",
       email: "123@qq.com",
@@ -197,7 +200,7 @@
     },
     {
       // key: "1",
-      userid: "id02",
+      userid: 102,
       name: "Edward King 1",
       sex: "女",
       email: "232@qq.com",
@@ -209,7 +212,7 @@
     },
     {
       // key: "2",
-      userid: "id03",
+      userid: 103,
       name: "Zx01",
       sex: "女",
       email: "332@qq.com",
@@ -234,29 +237,30 @@
     i_row.value = index
   }
 
+  
+  // const onMouseleave = (record, index, column, text) => {
+  //   console.log("鼠标移出当前行时执行   record的值:", 
+  //   record, "....index:", index, "column:",column, "----text:",text)
+  // }
+
   const onChange = (record, index, column, text) => {
-    console.log("仅当 modelValue 改变时，当输入框失去焦点或用户按Enter时触发执行了onChange   record的值:", 
-    record, "....index:", index, "column:",column, "----text:",text)
+    // console.log("仅当 modelValue 改变时，当输入框失去焦点或用户按Enter时触发执行了onChange   record的值:", 
+    // record, "....index:", index, "column:",column, "----text:",text)
   }
 
   const before_field = (record, index, column, text) => {
-    console.log("当选择器的输入框失去焦点时触发 after field:", record, index, column, text)
+    // console.log("当选择器的输入框失去焦点时触发 after field:", record, index, column, text)
   }
 
   const after_field = (record, index, column, text) => {
-    console.log("当选择器的输入框获得焦点时触发,执行行了before field; record值:", record,
-      "    ----index值:", index, "column:",column, "----text:",text)
+    // console.log("当选择器的输入框获得焦点时触发,执行行了before field; record值:", record,
+    //   "    ----index值:", index, "column:",column, "----text:",text)
     }
 
-  const input = (record, index, column, text) => {
-    console.log("在 Input 值改变时触发,执行行了input; record值:",record,
-    "    ----index值:",index, "-----column:",column, "----text:",text)
-  }
-
-  const dj = () => {
-    console.log("测试组件返回的行信息:", i_record.value)
-    console.log("测试组件返回的i_row信息:", i_row.value)
-  }
+  // const input = (record, index, column, text) => {
+  //   // console.log("在 Input 值改变时触发,执行行了input; record值:",record,
+  //   // "    ----index值:",index, "-----column:",column, "----text:",text)
+  // }
 
   const funmultipleSelection = (val) => {
     multipleSelection.value = val
@@ -381,7 +385,7 @@
     dataSource.value = [
       {
         // key: "0",
-        userid: "id01",
+        userid: 101,
         name: "Edward King 0",
         sex: "男",
         email: "123@qq.com",
@@ -394,7 +398,7 @@
       },
       {
         // key: "1",
-        userid: "id02",
+        userid: 102,
         name: "Edward King 1",
         sex: "女",
         email: "232@qq.com",
@@ -406,7 +410,7 @@
       },
       {
         // key: "2",
-        userid: "id03",
+        userid: 103,
         name: "Zx01",
         sex: "女",
         email: "332@qq.com",
